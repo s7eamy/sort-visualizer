@@ -1,7 +1,9 @@
 /**
  * TODO:
  * 1. Implement more sorting algorithms (merge 3-way, heapsort, quicksort)
- * 2. Timer (DONE)
+ * 2. Clear up main.cpp
+ * 2.1. Move sorting functions to their own header and source files
+ * 2.2. Move other functions to utility header and source files
  * 3. Add sound fx
  * 4. Different configurations
  * 4.1. Randomization levels
@@ -15,26 +17,17 @@
 #include <limits>     /* std::numeric_limits     */
 #include <array>      /* for storing our bars    */
 #include <chrono>     /* for measuring time      */
-#include <algorithm>  /* std::sort               */
+#include "ScreenDims.hpp"
+#include "Drawing.hpp"
+#include "MergeSort.hpp"
 //-------------------------------------------------
-
-//----------------------------
-const int SCREEN_HEIGHT = 720;
-const int SCREEN_WIDTH = 1280;
-//----------------------------
 
 //----------------------------------------------------------
 // Forward declaration of all the functions we are going to use
 bool Init( SDL_Window** win, SDL_Renderer** rend, int width );
 void GetInput( int &n, int &t );
-void ClearScreen( SDL_Renderer* rend );
-void DrawBars( SDL_Renderer* rend, std::array<SDL_Rect, SCREEN_WIDTH> arr, int n );
-void ColorBars( SDL_Renderer* rend, std::array<SDL_Rect, SCREEN_WIDTH> arr, int n );
 void Kill( SDL_Renderer* rend, SDL_Window* win );
 void SwapBars( SDL_Rect* rect1, SDL_Rect* rect2 );
-// For mergesort
-void MergeSort( const int num, SDL_Renderer* renderer, std::array<SDL_Rect, SCREEN_WIDTH> &arr, int low, int high );
-void Merge( std::array<SDL_Rect, SCREEN_WIDTH> &arr, int low, int middle, int high );
 //-----------------------------------------------
 
 int main(int argc, char* args[])
@@ -148,55 +141,6 @@ int main(int argc, char* args[])
     }
     return 0;
 }
-void MergeSort( const int num, SDL_Renderer* renderer, std::array<SDL_Rect, SCREEN_WIDTH> &arr, int low, int high )
-{
-    ClearScreen( renderer );
-    DrawBars( renderer, arr, num );
-    SDL_Delay( 5 );
-    if( low < high )
-    {
-        int middle = low + (high-low)/2;
-        MergeSort( num, renderer, arr, low, middle );
-        MergeSort( num, renderer, arr, middle+1, high );
-        Merge( arr, low, middle, high );
-    }
-}
-void Merge( std::array<SDL_Rect, SCREEN_WIDTH> &arr, int low, int middle, int high )
-{
-    std::array<SDL_Rect, SCREEN_WIDTH> helper;
-    for( int i = low; i <= high; i++ )
-    {
-        helper[i] = arr[i];
-    }
-
-    int i = low;
-    int j = middle+1;
-    int k = low;
-    while( i <= middle && j <= high )
-    {
-        if( helper[i].h <= helper[j].h )
-        {
-            arr[k].y = helper[i].y;
-            arr[k].h = helper[i].h;
-            i++;
-        }
-        else
-        {
-            arr[k].h = helper[j].h;
-            arr[k].y = helper[j].y;
-            j++;
-        }
-        k++;
-    }
-
-    while( i <= middle )
-    {
-        arr[k].h = helper[i].h;
-        arr[k].y = helper[i].y;
-        k++;
-        i++;
-    }
-}
 
 void SwapBars( SDL_Rect* rect1, SDL_Rect* rect2 )
 {
@@ -237,35 +181,6 @@ void Kill( SDL_Renderer* rend, SDL_Window* win )
     SDL_DestroyWindow( win );
     win = nullptr;
     SDL_Quit();
-}
-
-// makes the screen black
-void ClearScreen( SDL_Renderer* rend )
-{
-    SDL_SetRenderDrawColor( rend, 0, 0, 0, 255 );
-    SDL_RenderClear( rend );
-}
-
-// draw bars from the array
-void DrawBars( SDL_Renderer* rend, std::array<SDL_Rect, SCREEN_WIDTH> arr, int n )
-{
-    SDL_SetRenderDrawColor( rend, 255, 255, 255, 255 );
-    for( int i = 0; i < n; i++ ) 
-    {
-        SDL_RenderFillRect( rend, &arr[i] );
-    }
-    SDL_RenderPresent( rend );
-}
-
-// color the bars green
-void ColorBars( SDL_Renderer* rend, std::array<SDL_Rect, SCREEN_WIDTH> arr, int n )
-{
-    SDL_SetRenderDrawColor( rend, 0, 255, 0, 255 );
-    for( int i = 0; i < n; i++ ) 
-    {
-        SDL_RenderFillRect( rend, &arr[i] );
-    }
-    SDL_RenderPresent( rend );
 }
 
 // initialize window, renderer, sdl subsystems

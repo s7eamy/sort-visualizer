@@ -1,3 +1,5 @@
 build/vis.exe
 .vscode/c_cpp_properties.json
 build/main.o
+build/MergeSort.o
+build/Drawing.o
