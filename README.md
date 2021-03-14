@@ -1,15 +1,15 @@
-## Array sorting algorithm visualizer
-# Description
+# Array sorting algorithm visualizer
+## Description
 Visualizes the work of an array sorting algo using C++ and SDL2.
 
-# Input
+## Input
 1. Number of elements to sort
 2. What sorting algorithm to use?
 
-# Output
+## Output
 Shows a graphic visualization of the sorting being done on an std::array. Outputs time in milliseconds to STDOUT.
 
-# TODO:
+## TODO:
 - [ ] Implement more sorting algos:
 - [x] 1. Merge sort
 - [x] 2. Bubble sort
