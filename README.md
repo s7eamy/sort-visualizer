@@ -15,10 +15,7 @@ Shows a graphic visualization of the sorting being done on an std::array. Output
 
 2. Add sound
 
-3. Different configurations
-
-3.1. Randomization levels
-
-3.2. Element count
-
-3.3. Almost sorted/fully sorted/sorted in reverse/ etc.
+3. Different configurations:
+*Randomization levels
+*Element count
+*Almost sorted/fully sorted/sorted in reverse/ etc.
