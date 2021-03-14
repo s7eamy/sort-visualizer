@@ -12,7 +12,9 @@ Shows a graphic visualization of the sorting being done on an std::array. Output
 
 # TODO:
 1. Implement more sorting algos
+
 2. Add sound
+
 3. Different configurations
 
 3.1. Randomization levels
