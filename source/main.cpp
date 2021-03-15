@@ -20,6 +20,7 @@
 #include "ScreenDims.hpp"
 #include "Drawing.hpp"
 #include "MergeSort.hpp"
+#include "InsertionSort.hpp"
 //-------------------------------------------------
 
 //----------------------------------------------------------
@@ -92,26 +93,9 @@ int main(int argc, char* args[])
         break;
 
         case 3: /* insertion sort */
-        int hole_pos;
-        int insert_value;
-
-        for( int i = 0; i < num_of_elements; i++ )
-        {
-            insert_value = bars[i].h;
-            hole_pos = i;
-
-            while( hole_pos > 0 && bars[hole_pos-1].h > insert_value )
-            {
-                bars[hole_pos].h = bars[hole_pos-1].h;
-                bars[hole_pos].y = bars[hole_pos-1].y;
-                hole_pos -= 1;
-            }
-
-            bars[hole_pos].h = insert_value;
-            bars[hole_pos].y = SCREEN_HEIGHT - bars[hole_pos].h;
-            ClearScreen( renderer );
-            DrawBars( renderer, bars, num_of_elements );
-        }
+        InsertionSort( bars, num_of_elements, renderer );
+        ClearScreen( renderer );
+        DrawBars( renderer, bars, num_of_elements );
         break;
 
         case 4: /* 2-way merge sort */
@@ -121,7 +105,6 @@ int main(int argc, char* args[])
         break;
     }
     auto stop = std::chrono::high_resolution_clock::now();
-    ClearScreen( renderer );
     ColorBars( renderer, bars, num_of_elements );
     auto dur = std::chrono::duration_cast<std::chrono::milliseconds>(stop-start);
     std::cout << '\n';

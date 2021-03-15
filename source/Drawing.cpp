@@ -27,6 +27,6 @@ void ColorBars( SDL_Renderer* rend, std::array<SDL_Rect, SCREEN_WIDTH> arr, int 
     for( int i = 0; i < n; i++ ) 
     {
         SDL_RenderFillRect( rend, &arr[i] );
+        SDL_RenderPresent( rend );
     }
-    SDL_RenderPresent( rend );
 }

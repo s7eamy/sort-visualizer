@@ -3,3 +3,9 @@ build/vis.exe
 build/main.o
 build/MergeSort.o
 build/Drawing.o
+*.rar
+build/Drawing.d
+build/InsertionSort.d
+build/InsertionSort.o
+build/main.d
+build/MergeSort.d

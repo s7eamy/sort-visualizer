@@ -1,21 +1,39 @@
+FINAL_EXEC := vis
 CC := g++
-FINAL_EXEC := vis.exe
 
+# source file dir
 SRC_DIR := ./source
+# build dir
 BUILD_DIR := ./build
-INC_DIR := ./include
+# header file dir
+INC_DIRS := include
+INC_FLAGS := $(addprefix -I, $(INC_DIRS))
+WIN_FLAGS := -lmingw32 -LC:/mingw_dev_lib/lib -IC:/mingw_dev_lib/include
 
-OBJS := $(BUILD_DIR)/Drawing.o $(BUILD_DIR)/MergeSort.o $(BUILD_DIR)/main.o
+# list of all source files
+SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+# list of all source files, but in build dir
+OBJS_TEMP := $(subst $(SRC_DIR), $(BUILD_DIR), $(SRCS))
+# list of all object files in build dir
+OBJS := $(OBJS_TEMP:.cpp=.o )
+# list of all dependencies
+DEPS := $(OBJS:.o=.d)
 
-INC_FLAGS := $(addprefix -I, $(INC_DIR))
-LIB_FLAGS := -lmingw32 -LC:/mingw_dev_lib/lib -IC:/mingw_dev_lib/include -lSDL2main -lSDL2
-
+# IF RUNNING WINDOWS, THEN INCLUDE THE WIN_FLAGS
+# VARIABLE BEFORE -lSDL2main, IF NOT ON WINDOWS, REMOVE IT
 $(BUILD_DIR)/$(FINAL_EXEC): $(OBJS)
-	g++ $? -o $@ $(INC_FLAGS) $(LIB_FLAGS)
+	$(CC) $^ -o $@ $(WIN_FLAGS) -lSDL2main -lSDL2
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	g++ $(INC_FLAGS) -c $^ -o $@
+	$(CC) $(INC_FLAGS) -MMD -MP -c $^ -o $@ 
 
+speak:
+	@echo $(OBJS)
+	@echo $(SRCS)
+	@echo $(DEPS)
+
+# dont want to delete the .pngs
 clean:
 	rm $(BUILD_DIR)/*.o
-	rm $(BUILD_DIR)/vis.exe
+	rm $(BUILD_DIR)/*.d
+	rm $(BUILD_DIR)/$(FINAL_EXEC)
