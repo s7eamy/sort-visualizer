@@ -1,4 +1,4 @@
-FINAL_EXEC := vis
+FINAL_EXEC := vis.exe
 CC := g++
 
 # source file dir
@@ -22,7 +22,7 @@ DEPS := $(OBJS:.o=.d)
 # IF RUNNING WINDOWS, THEN INCLUDE THE WIN_FLAGS
 # VARIABLE BEFORE -lSDL2main, IF NOT ON WINDOWS, REMOVE IT
 $(BUILD_DIR)/$(FINAL_EXEC): $(OBJS)
-	$(CC) $^ -o $@ $(WIN_FLAGS) -lSDL2main -lSDL2
+	$(CC) $^ -o $@ $(WIN_FLAGS) -lSDL2main -lSDL2 -static-libgcc -static-libstdc++
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) $(INC_FLAGS) -MMD -MP -c $^ -o $@ 

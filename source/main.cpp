@@ -3,7 +3,6 @@
  * 1. Implement more sorting algorithms (merge 3-way, heapsort, quicksort)
  * 2. Clear up main.cpp
  * 2.1. Move sorting functions to their own header and source files
- * 2.2. Move other functions to utility header and source files
  * 3. Add sound fx
  * 4. Different configurations
  * 4.1. Randomization levels
@@ -17,10 +16,12 @@
 #include <limits>     /* std::numeric_limits     */
 #include <array>      /* for storing our bars    */
 #include <chrono>     /* for measuring time      */
+#include "SwapBars.hpp"
 #include "ScreenDims.hpp"
 #include "Drawing.hpp"
 #include "MergeSort.hpp"
 #include "InsertionSort.hpp"
+#include "SelectionSort.hpp"
 //-------------------------------------------------
 
 //----------------------------------------------------------
@@ -28,7 +29,6 @@
 bool Init( SDL_Window** win, SDL_Renderer** rend, int width );
 void GetInput( int &n, int &t );
 void Kill( SDL_Renderer* rend, SDL_Window* win );
-void SwapBars( SDL_Rect* rect1, SDL_Rect* rect2 );
 //-----------------------------------------------
 
 int main(int argc, char* args[])
@@ -53,7 +53,6 @@ int main(int argc, char* args[])
     }
     DrawBars( renderer, bars, num_of_elements );
     // sorting
-    int count = 0;
     auto start = std::chrono::high_resolution_clock::now();
     switch( sort_type )
     {
@@ -64,7 +63,6 @@ int main(int argc, char* args[])
             {
                 if( bars[i].h > bars[j].h )
                 {
-                    count++;
                     SwapBars( &bars[i], &bars[j] );
                     ClearScreen( renderer );
                     DrawBars( renderer, bars, num_of_elements );
@@ -74,22 +72,9 @@ int main(int argc, char* args[])
         break;
 
         case 2: /* selection sort */
-        for( int i = 0; i < num_of_elements-1; i++ )
-        {
-            int min = i;
-
-            for( int j = i+1; j < num_of_elements; j++ )
-                if( bars[j].h < bars[min].h )
-                    min = j;
-
-            if( min != i )
-            {
-                count++;
-                SwapBars( &bars[i], &bars[min] );
-                ClearScreen( renderer );
-                DrawBars( renderer, bars, num_of_elements );
-            }
-        }
+        SelectionSort( renderer, bars, num_of_elements );
+        ClearScreen( renderer );
+        DrawBars( renderer, bars, num_of_elements );
         break;
 
         case 3: /* insertion sort */
@@ -125,11 +110,6 @@ int main(int argc, char* args[])
     return 0;
 }
 
-void SwapBars( SDL_Rect* rect1, SDL_Rect* rect2 )
-{
-    std::swap( rect1->h, rect2->h );
-    std::swap( rect1->y, rect2->y );
-}
 
 // gets input from STDIN
 void GetInput( int &n, int &t )
