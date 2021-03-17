@@ -9,3 +9,9 @@ build/InsertionSort.d
 build/InsertionSort.o
 build/main.d
 build/MergeSort.d
+build/BubbleSort.d
+build/BubbleSort.o
+build/SelectionSort.d
+build/SelectionSort.o
+build/SwapBars.d
+build/SwapBars.o

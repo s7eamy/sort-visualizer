@@ -10,18 +10,20 @@
  */
 
 //-------------------------------------------------
-/* The includes needed for our program           */
+/* The standard includes needed for our program  */
 #include <SDL2/SDL.h> /* the visualizer graphics */
 #include <iostream>   /* std::cout and std::cin  */
 #include <limits>     /* std::numeric_limits     */
 #include <array>      /* for storing our bars    */
 #include <chrono>     /* for measuring time      */
-#include "SwapBars.hpp"
-#include "ScreenDims.hpp"
-#include "Drawing.hpp"
-#include "MergeSort.hpp"
-#include "InsertionSort.hpp"
-#include "SelectionSort.hpp"
+/* The header files that have various functions  */
+#include "SwapBars.hpp"      /* */
+#include "ScreenDims.hpp"    /* */
+#include "Drawing.hpp"       /* */
+#include "MergeSort.hpp"     /* */
+#include "InsertionSort.hpp" /* */
+#include "SelectionSort.hpp" /* */
+#include "BubbleSort.hpp"    /* */
 //-------------------------------------------------
 
 //----------------------------------------------------------
@@ -57,18 +59,9 @@ int main(int argc, char* args[])
     switch( sort_type )
     {
         case 1: /* bubble sort */
-        for( int i = 0; i < num_of_elements-1; i++ )
-        {
-            for( int j = i+1; j < num_of_elements; j++ )
-            {
-                if( bars[i].h > bars[j].h )
-                {
-                    SwapBars( &bars[i], &bars[j] );
-                    ClearScreen( renderer );
-                    DrawBars( renderer, bars, num_of_elements );
-                }
-            }
-        }
+        BubbleSort( bars, num_of_elements, renderer );
+        ClearScreen( renderer );
+        DrawBars( renderer, bars, num_of_elements );
         break;
 
         case 2: /* selection sort */
@@ -107,6 +100,8 @@ int main(int argc, char* args[])
             }
         }
     }
+
+    Kill( renderer, window );
     return 0;
 }
 
